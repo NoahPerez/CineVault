@@ -24,6 +24,7 @@ export function MovieProvider({children}){
     }
    };
 
+
    const getMovieDetails = async (movieId) =>{
     try {
         setLoading(true)
@@ -40,6 +41,25 @@ export function MovieProvider({children}){
         setLoading(false)
     }
    };
+
+
+    // https://api.themoviedb.org/3/movie/{movie_id}/rating
+
+    // const rateMovie = async (e,movieId, rating,) =>{
+    //     e.preventDefault()
+    //     try {
+    //         setLoading(true)
+    //         setError(null)
+    //         const {data} = await api.post(`/movie/${movieId}/rating`,{
+    //             value: rating
+    //         })
+    //         setSelectedmovie(data)
+    //     } catch (error) {
+    //         setError(error.message || "Error rating movie")
+    //     } finally {
+    //         setLoading(false)
+    //     }
+    // }
 
    const searchMovies = async (query) => {
     try {

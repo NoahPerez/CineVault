@@ -1,0 +1,26 @@
+<svg width="800" height="500" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <text
+    x="50%"
+    y="210"
+    text-anchor="middle"
+    font-family="Arial Black, Impact, Helvetica, sans-serif"
+    font-size="180"
+    font-weight="900"
+    letter-spacing="-8"
+    fill="#F3F4F6"
+  >
+    CINE
+  </text>
+  <text
+    x="50%"
+    y="355"
+    text-anchor="middle"
+    font-family="Arial Black, Impact, Helvetica, sans-serif"
+    font-size="165"
+    font-weight="900"
+    letter-spacing="-6"
+    fill="#D9E021"
+  >
+    VAULT
+  </text>
+</svg>
