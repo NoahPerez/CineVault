@@ -11,11 +11,23 @@
     backdrop-filter: blur(16px);
   }
 
+  .sidebar__brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  .sidebar__brand-icon {
+    flex-shrink: 0;
+    color: #dfff00;
+  }
+
   .sidebar__logo {
     display: block;
-    width: 140px;
+    width: 115px;
     height: auto;
-    margin: 0 0 40px;
+    margin: 0;
   }
 
   .sidebar__nav {
@@ -24,7 +36,9 @@
   }
 
   .sidebar__link {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 14px 12px;
     border-radius: 6px;
     color: #aeb2aa;
@@ -46,7 +60,6 @@
     color: #070907;
   }
 
-
   @media (max-width: 768px) {
     .sidebar {
       position: static;
@@ -54,17 +67,17 @@
       height: auto;
     }
 
+    .sidebar__brand {
+      margin-bottom: 20px;
+    }
+
     .sidebar__nav {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
     }
 
     .sidebar__link {
-      text-align: center;
-      font-size: 12px;
+      justify-content: center;
       padding: 12px 8px;
-    }
-
-    .app-main {
-      margin-left: 0;
+      font-size: 11px;
     }
   }

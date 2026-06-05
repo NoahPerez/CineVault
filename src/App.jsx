@@ -8,6 +8,7 @@ import Watchlist from "./pages/Watchlist.jsx"
 import Sidebar from "./components/SideBar.jsx"
 import Profile from "./pages/Profile.jsx"
 import NotFound from "./pages/NotFound.jsx"
+import TVShows from "./pages/TVShows.jsx"
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <main className="app-main">
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/tv-shows" element={<TVShows />} />
         <Route path="/search" element={<Search />} />
         <Route path="/movie/:id" element={<MovieDetails />} />
         <Route path="/watchlist" element={<Watchlist />} />
