@@ -1,6 +1,9 @@
 import { useEffect } from "react"
 import MovieCarousel from "../components/MovieCarousel"
 import { useMovies } from "../context/Movie.context"
+import Genres from "../components/Genres"
+import Footer from "../components/Footer";
+
 
 export default function Homepage() {
   const {
