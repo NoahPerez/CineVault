@@ -1,44 +1,41 @@
-
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useMovies } from "../context/Movie.context";
+import { useEffect } from "react"
+import { useParams } from "react-router-dom"
+import { useMovies } from "../context/Movie.context"
 
 export default function GenrePage() {
-  const { id } = useParams();
-  const { movies, getMoviesByGenre, loading } = useMovies();
+  const { id } = useParams()
+  const { genreMovies, getMoviesByGenre, loading } = useMovies()
 
   useEffect(() => {
-  if (id) {
-    getMoviesByGenre(id);
-  }
-}, [id]);
+    if (id) {
+      getMoviesByGenre(id)
+    }
+  }, [id])
 
-  if (loading) return <div style={{ color: "white" }}>Loading...</div>;
+  const movies = genreMovies?.[id] || []
+
+  if (loading) return <div className="text-white p-4">Loading...</div>
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1 style={{ color: "white", marginBottom: "20px" }}>
+    <div className="p-6">
+      <h1 className="text-white text-2xl font-bold mb-6">
         Genre Movies
       </h1>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-          gap: "16px",
-        }}
-      >
-        {movies.map((movie) => (
-          <img
-            key={movie.id}
-            src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-            style={{
-              width: "100%",
-              borderRadius: "10px",
-            }}
-          />
-        ))}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        {movies.length > 0 ? (
+          movies.map((movie) => (
+            <img
+              key={movie.id}
+              src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+              className="rounded-lg"
+              alt={movie.title}
+            />
+          ))
+        ) : (
+          <p className="text-white">No movies found</p>
+        )}
       </div>
     </div>
-  );
+  )
 }

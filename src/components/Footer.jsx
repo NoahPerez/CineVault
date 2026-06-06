@@ -1,104 +1,35 @@
-// import logo from "../assets/logo.svg"
-  
-// export default function Footer() {
-//   return (
-// <footer
-//   style={{
-//     marginTop: "80px",
-//     padding: "30px 24px",
-//     background: "#111827",
-//     color: "white",
-//   }}
-// >
-
-// <div
-//         style={{
-//           display: "flex",
-//           alignItems: "center",
-//           justifyContent: "center",
-//           gap: "12px",
-//         }}
-//       >
-//          <img
-//             src={logo}
-//             alt="CineVault logo"
-//             style={{
-//               width: "140px",
-//               objectFit: "contain",
-//                marginBottom: "5px",
-//   }}
-//     />
-//       <span style={{ color: "#9ca3af", fontSize: "14px" }}>
-//           © {new Date().getFullYear()} All rights reserved
-//         </span>
-
-//  </div>
-
- 
- 
-
-//   <div
-//     style={{
-//       display: "flex",
-//       justifyContent: "center",
-//       gap: "20px",
-//       marginTop: "16px",
-//     }}
-//   >
-//     <a href="/">Terms of Use</a>
-//     <a href="/watchlist">Privacy Policy</a>
-//     <a href="/profile">Help Centre</a>
-//      <a href="/profile">Contact Us</a>
-//   </div>
-
- 
-// </footer>
-//   );
-// }
-
 import logo from "../assets/logo.svg";
 
 export default function Footer() {
   return (
- <footer className="w-full bg-gray-900 text-white ">
+    <footer className="w-full bg-[#0d1b2a] text-white px-6 py-4 flex items-center justify-between">
       
-      
-      <div className=" flex gap-3 flex-col" >
+      <div className="flex items-center gap-3">
         <img
           src={logo}
           alt="CineVault logo"
-          className="w-36 ml-0"
+          className="w-16"
         />
-
-        <span className="text-gray-400 text-sm">
-          © {new Date().getFullYear()} All rights reserved
+        <span className="text-gray-400 text-xs">
+          © {new Date().getFullYear()} CineVault <br /> All rights reserved.
         </span>
       </div>
 
-     
-      <div className="flex justify-center gap-6 mt-6">
-        <a href="/" className="text-gray-300 hover:text-white transition">
+      <div className="flex gap-6">
+        <a href="/" className="text-gray-300 hover:text-white transition text-sm">
           Terms of Use
         </a>
-        <a
-          href="/watchlist"
-          className="text-gray-300 hover:text-white transition"
-        >
+        <a href="/watchlist" className="text-gray-300 hover:text-white transition text-sm">
           Privacy Policy
         </a>
-        <a
-          href="/profile"
-          className="text-gray-300 hover:text-white transition"
-        >
-          Help Centre
+        <a href="/profile" className="text-gray-300 hover:text-white transition text-sm">
+          Help Center
         </a>
-        <a  href="/profile" 
-        className="text-gray-300 hover:text-white transition">
+        <a href="/profile" className="text-gray-300 hover:text-white transition text-sm">
           Contact Us
         </a>
       </div>
 
-    
     </footer>
   );
 }
