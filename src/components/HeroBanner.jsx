@@ -1,43 +1,53 @@
 import { Link } from "react-router-dom"
 import "./HeroBanner.css"
 
-  const imageBaseUrl = "https://image.tmdb.org/t/p/original"
+const imageBaseUrl = "https://image.tmdb.org/t/p/original"
 
-  export default function HeroBanner({ movie, onAdd }) {
-    if (!movie) return null
+export default function HeroBanner({
+  movie,
+  onAdd,
+  featuredMovies = [],
+  activeIndex = 0,
+  onSelectFeature,
+}) {
+  if (!movie) return null
 
-    const backdropUrl = movie.backdrop_path
-      ? `${imageBaseUrl}${movie.backdrop_path}`
-      : null
+  const backdropUrl = movie.backdrop_path
+    ? `${imageBaseUrl}${movie.backdrop_path}`
+    : null
 
-    const releaseYear = movie.release_date
-      ? movie.release_date.slice(0, 4)
-      : "N/A"
+  const title = movie.title || movie.name || "Untitled"
+  const releaseDate = movie.release_date || movie.first_air_date || ""
+  const releaseYear = releaseDate ? releaseDate.slice(0, 4) : "N/A"
+  const detailPath = movie.name && !movie.title ? "/tv-shows" : `/movie/${movie.id}`
 
-    const rating = movie.vote_average
-      ? Number(movie.vote_average).toFixed(1)
-      : "N/A"
+  const rating = movie.vote_average
+    ? Number(movie.vote_average).toFixed(1)
+    : "N/A"
 
-    return (
-      <section className="hero-banner">
-        {backdropUrl && (
-          <img
-            className="hero-banner__backdrop"
-            src={backdropUrl}
-            alt=""
-            aria-hidden="true"
-          />
-        )}
+  return (
+    <section className="hero-banner">
+      {backdropUrl && (
+        <img
+          className="hero-banner__backdrop"
+          src={backdropUrl}
+          alt=""
+          aria-hidden="true"
+        />
+      )}
 
-        <div className="hero-banner__overlay" />
+      <div className="hero-banner__overlay" />
 
+      <div className="hero-banner__layout">
         <div className="hero-banner__content">
           <p className="hero-banner__label">Trending Now</p>
 
-          <h1 className="hero-banner__title">{movie.title}</h1>
+          <h1 className="hero-banner__title">{title}</h1>
 
           <p className="hero-banner__meta">
             {releaseYear}
+            <span>•</span>
+            {movie.name && !movie.title ? "TV Show" : "Movie"}
             <span>•</span>
             TMDB {rating}
           </p>
@@ -48,13 +58,44 @@ import "./HeroBanner.css"
           </p>
 
           <div className="hero-banner__actions">
-            <button type="button" onClick={() => onAdd(movie)}>
+            <button type="button" disabled={!onAdd} onClick={() => onAdd?.(movie)}>
               + Add to Watchlist
             </button>
 
-            <Link to={`/movie/${movie.id}`}>More Info</Link>
+            <Link to={detailPath}>More Info</Link>
           </div>
+
+          {featuredMovies.length > 1 && (
+            <div className="hero-banner__dots" aria-label="Featured movies">
+              {featuredMovies.map((featuredMovie, index) => {
+                const featuredTitle =
+                  featuredMovie.title || featuredMovie.name || "featured title"
+
+                return (
+                  <button
+                    key={featuredMovie.id}
+                    type="button"
+                    className={
+                      activeIndex % featuredMovies.length === index ? "active" : ""
+                    }
+                    aria-label={`Show ${featuredTitle}`}
+                    onClick={() => onSelectFeature?.(index)}
+                  />
+                )
+              })}
+            </div>
+          )}
         </div>
-      </section>
-    )
-  }
+
+        <aside className="hero-banner__snapshot">
+          <span className="hero-banner__snapshot-label">Featured</span>
+          <strong>{featuredMovies.length}</strong>
+          <p>Popular movies in rotation</p>
+          <Link to="/watchlist" className="hero-banner__snapshot-link">
+            Open Watchlist <span>→</span>
+          </Link>
+        </aside>
+      </div>
+    </section>
+  )
+}
