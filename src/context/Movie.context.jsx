@@ -8,7 +8,6 @@ export function MovieProvider({children}){
    const [popularMovies, setPopularMovies] =useState([]);
    const [upcomingMovies, setUpcomingMovies] =useState([]);
    const [popularTvShows, setPopularTvShows] =useState([]);
-   const [movieGenre, setMovieGenre] =useState([]);
    const [selectedTv, setSelectedTv] = useState(null)
    const [loading, setLoading] =useState(true);
    const [searchResults, setSearchResults] =useState([]);
@@ -134,72 +133,74 @@ const getMovieGenre = async () =>{
 // };
 
 // only slected one genre movies
+
 const getGenres = async () => {
-  try {
-    const { data } = await api.get("/genre/movie/list?language=en");
+    try {
+      setError(null)
 
-    const allowedGenres = [
-      "Action",
-      "Comedy",
-      "Horror",
-      "Drama",
-      "Science Fiction",
-      "Thriller",
-    ];
+      const { data } = await api.get("/genre/movie/list?language=en")
 
-    const filteredGenres = data.genres.filter((genre) =>
-      allowedGenres.includes(genre.name)
-    );
+      const allowedGenres = [
+        "Action",
+        "Comedy",
+        "Horror",
+        "Drama",
+        "Science Fiction",
+        "Thriller",
+      ]
 
-    setGenres(filteredGenres);
-  } catch (error) {
-    setError(error.message || "Error fetching genres");
+      const filteredGenres = data.genres.filter((genre) =>
+        allowedGenres.includes(genre.name)
+      )
+
+      setGenres(filteredGenres)
+
+      
+      fetchMoviesForAllGenres(filteredGenres)
+    } catch (error) {
+      setError(error.message)
+    }
   }
-};
 
 const getMoviesByGenre = async (genreId) => {
-  try {
-    setLoading(true);
-    setError(null);
+    try {
+      setError(null)
 
-    setSelectedGenre(genreId);
+      const { data } = await api.get("/discover/movie", {
+        params: {
+          with_genres: genreId,
+        },
+      })
 
-    const { data } = await api.get("/discover/movie", {
-      params: {
-        with_genres: genreId,
-      },
-    });
-
-    setGenreMovies((prev) => ({
-      ...prev,
-      [genreId]: data.results || [],
-    }));
-  } catch (error) {
-    setError(error.message || "Error fetching genre movies");
-  } finally {
-    setLoading(false);
+      setGenreMovies((prev) => ({
+        ...prev,
+        [genreId]: data.results || [],
+      }))
+    } catch (error) {
+      setError(error.message)
+    }
   }
-};
+
 
 const fetchMoviesForAllGenres = async (genresList) => {
-  try {
-    const results = {};
+    try {
+      const results = {}
 
-    await Promise.all(
-      genresList.map(async (genre) => {
-        const { data } = await api.get("/discover/movie", {
-          params: { with_genres: genre.id },
-        });
+      await Promise.all(
+        genresList.map(async (genre) => {
+          const { data } = await api.get("/discover/movie", {
+            params: { with_genres: genre.id },
+          })
 
-        results[genre.id] = data.results || [];
-      })
-    );
+          results[genre.id] = data.results || []
+        })
+      )
 
-    setGenreMovies(results);
-  } catch (err) {
-    console.log(err);
+      setGenreMovies(results)
+    } catch (err) {
+      console.log("Error fetching genre movies:", err)
+    }
   }
-};
 
     return (
         <MovieContext.Provider 
@@ -212,8 +213,6 @@ const fetchMoviesForAllGenres = async (genresList) => {
         getPopularTvShows,
         error, 
         selectedmovie, 
-        movieGenre,
-        getMovieGenre,
         getMovieDetails, 
         selectedTv,
         getTvDetails,
