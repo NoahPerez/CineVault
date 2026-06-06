@@ -10,6 +10,7 @@ import Profile from "./pages/Profile.jsx"
 import NotFound from "./pages/NotFound.jsx"
 import TVShows from "./pages/TVShows.jsx"
 
+
 function App() {
   return (
     <div className="app-layout">

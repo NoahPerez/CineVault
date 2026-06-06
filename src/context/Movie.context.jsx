@@ -5,7 +5,11 @@ import api from "../lib/api"
 const MovieContext = createContext()
 
 export function MovieProvider({children}){
-   const [movies, setMovies] =useState([]);
+   const [popularMovies, setPopularMovies] =useState([]);
+   const [upcomingMovies, setUpcomingMovies] =useState([]);
+   const [popularTvShows, setPopularTvShows] =useState([]);
+   const [movieGenre, setMovieGenre] =useState([]);
+   const [selectedTv, setSelectedTv] = useState(null)
    const [loading, setLoading] =useState(true);
    const [searchResults, setSearchResults] =useState([]);
    const [selectedmovie, setSelectedmovie] =useState(null);
@@ -16,7 +20,7 @@ export function MovieProvider({children}){
         setLoading(true)
         setError(null)
         const {data} = await api.get("/movie/popular");
-        setMovies(data.results || [])
+        setPopularMovies(data.results || [])
     } catch (error) {
         setError(error.message || "Error fetching popular movies")
     } finally {
@@ -24,6 +28,31 @@ export function MovieProvider({children}){
     }
    };
 
+   const getUpcomingMovies = async () =>{
+    try {
+        setLoading(true)
+        setError(null)
+        const {data} = await api.get("/movie/upcoming");
+        setUpcomingMovies(data.results || [])
+    } catch (error) {
+        setError(error.message || "Error fetching upcoming movies")
+    } finally {
+        setLoading(false)
+    }
+   };
+
+   const getPopularTvShows = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const { data } = await api.get("/tv/popular")
+      setPopularTvShows(data.results || [])
+    } catch (error) {
+      setError(error.message || "Error fetching popular tv shows")
+    } finally {
+      setLoading(false)
+    }
+   }
 
    const getMovieDetails = async (movieId) =>{
     try {
@@ -42,24 +71,37 @@ export function MovieProvider({children}){
     }
    };
 
+   const getTvDetails = async (seriesId) => {
+  try {
+    setLoading(true)
+    setError(null)
 
-    // https://api.themoviedb.org/3/movie/{movie_id}/rating
+    const { data } = await api.get(`/tv/${seriesId}`, {
+      params: {
+        append_to_response: "credits,images,videos,reviews,recommendations",
+      },
+    })
 
-    // const rateMovie = async (e,movieId, rating,) =>{
-    //     e.preventDefault()
-    //     try {
-    //         setLoading(true)
-    //         setError(null)
-    //         const {data} = await api.post(`/movie/${movieId}/rating`,{
-    //             value: rating
-    //         })
-    //         setSelectedmovie(data)
-    //     } catch (error) {
-    //         setError(error.message || "Error rating movie")
-    //     } finally {
-    //         setLoading(false)
-    //     }
-    // }
+    setSelectedTv(data)
+  } catch (error) {
+    setError(error.message || "Error fetching tv details")
+  } finally {
+    setLoading(false)
+  }
+}
+const getMovieGenre = async () =>{
+  try {
+    setLoading(true)
+    setError(null)
+    const { data } = await api.get("/genre/movie/list")
+    setMovieGenre(data.genres || [])
+  } catch (error) {
+    setError(error.message || "Error fetching movie genre")
+  } finally {
+    setLoading(false)
+  }
+}
+
 
    const searchMovies = async (query) => {
     try {
@@ -79,14 +121,22 @@ export function MovieProvider({children}){
 
     return (
         <MovieContext.Provider 
-        value={{movies, 
+        value={{popularMovies, 
+        upcomingMovies,
+        popularTvShows,
         loading, 
         getPopularMovies, 
+        getUpcomingMovies,
+        getPopularTvShows,
         error, 
         selectedmovie, 
+        movieGenre,
+        getMovieGenre,
         getMovieDetails, 
+        selectedTv,
+        getTvDetails,
         searchResults, 
-        searchMovies
+        searchMovies,
         }}>
        {children}
         </MovieContext.Provider>

@@ -1,13 +1,26 @@
 import { useEffect } from "react"
-import logo from "../assets/logo.svg"
-import MovieCard from "../components/MovieCard"
+import MovieCarousel from "../components/MovieCarousel"
 import { useMovies } from "../context/Movie.context"
 
 export default function Homepage() {
-  const { movies, loading, error, getPopularMovies } = useMovies()
+  const {
+    popularMovies,
+    upcomingMovies,
+    popularTvShows,
+    loading,
+    error,
+    getPopularMovies,
+    getUpcomingMovies,
+    getPopularTvShows,
+    movieGenre,
+    getMovieGenre,
+  } = useMovies()
 
   useEffect(() => {
     getPopularMovies()
+    getUpcomingMovies()
+    getPopularTvShows()
+    getMovieGenre()
   }, [])
 
   if (loading) {
@@ -17,27 +30,57 @@ export default function Homepage() {
     return <div>Error: {error}</div>
   }
   return (
-    <section style={{ padding: "24px" }}>
-      <img
-        style={{ width: "150px" }}
-        className="logo"
-        src={logo}
-        alt="CineVault logo"
-      />
-      <h1 style={{ marginBottom: "20px", fontSize: "2rem", fontWeight: "700" }}>
-        Popular Movies
-      </h1>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-          gap: "24px",
-        }}
-      >
-        {movies.map(movie => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
+    <>
+    <section className="flex flex-col gap-6 p-6">
+      <div className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-foreground">Popular Movies</h1>
+        <MovieCarousel
+          movies={popularMovies}
+          cardSize="md"
+          cardRadius="full"
+          showRating={true}
+          itemClassName="basis-full sm:basis-1/2 lg:basis-1/5"
+        />
       </div>
     </section>
+
+    <section className="flex flex-col gap-6 p-6">
+      <div className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-foreground">Upcoming Movies</h1>
+        <MovieCarousel
+          movies={upcomingMovies}
+          cardSize="sm"
+          cardRadius="full"
+          showRating={false}
+          itemClassName="basis-full sm:basis-1/2 lg:basis-1/5"
+        />
+      </div>
+    </section>
+    <section className="flex flex-col gap-6 p-6">
+      <div className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-foreground">Popular TV Shows</h1>
+        <MovieCarousel
+          movies={popularTvShows}
+          cardSize="md"
+          cardRadius="full"
+          showRating={false}
+          itemClassName="basis-full sm:basis-1/2 lg:basis-1/5"
+        />
+      </div>
+    </section>
+    {/* <section className="flex flex-col gap-6 p-6">
+      <div className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-foreground">Movie Genres</h1>
+        <MovieCarousel
+          movies={movieGenre}
+          cardSize="sm"
+          cardRadius="full"
+          showRating={false}
+          itemClassName="basis-full sm:basis-1/2 lg:basis-1/5"
+        />
+      </div>
+    </section> */}
+
+    </>
   )
 }

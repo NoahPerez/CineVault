@@ -1,36 +1,44 @@
-function MovieCard({ movie }) {
-  if (!movie) return null;
+import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
+
+const sizeClasses = {
+  sm: { image: "aspect-[2/3]", title: "text-base", body: "p-3", overview: "line-clamp-2 text-xs leading-5" },
+  md: { image: "aspect-[2/3]", title: "text-lg", body: "p-4", overview: "line-clamp-3 text-sm leading-6" },
+  lg: { image: "aspect-[2/3]", title: "text-xl", body: "p-5", overview: "line-clamp-4 text-base leading-7" },
+}
+
+const radiusClasses = {
+  none: "rounded-none",
+  md: "rounded-xl",
+  lg: "rounded-2xl",
+  full: "rounded-3xl",
+}
+
+function MovieCard({ movie, size = "md", radius = "lg", showRating = false }) {
+  if (!movie) return null
 
   const imageUrl = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-    : "https://via.placeholder.com/500x750?text=No+Image";
+    : "https://via.placeholder.com/500x750?text=No+Image"
+
+  const selectedSize = sizeClasses[size] ?? sizeClasses.md
+  const selectedRadius = radiusClasses[radius] ?? radiusClasses.lg
 
   return (
-    <article
-      style={{
-        backgroundColor: "#111827",
-        color: "white",
-        borderRadius: "16px",
-        overflow: "hidden",
-        boxShadow: "0 10px 25px rgba(0, 0, 0, 0.2)",
-      }}
-    >
+    <article className={cn("relative overflow-hidden bg-card text-card-foreground shadow-lg", selectedRadius)}>
+      {showRating && (
+        <Badge className="absolute left-2 top-2 z-10 rounded-md border border-yellow-500/20 bg-black/90 px-2.5 py-1 text-xs font-bold text-yellow-300 shadow-sm">
+          {movie.vote_average?.toFixed(1) ?? "N/A"}
+        </Badge>
+      )}
       <img
         src={imageUrl}
         alt={movie.title}
-        style={{ width: "100%", height: "330px", objectFit: "cover", display: "block" }}
+        className={cn("block w-full object-cover", selectedSize.image)}
+        loading="lazy"
       />
-      <div style={{ padding: "16px" }}>
-        <h3 style={{ margin: "0 0 8px", fontSize: "1.1rem" }}>{movie.title}</h3>
-        <p style={{ margin: "0 0 10px", color: "#fbbf24", fontWeight: "600" }}>
-          Rating: {movie.vote_average?.toFixed(1) ?? "N/A"}
-        </p>
-        <p style={{ margin: 0, color: "#d1d5db", fontSize: "0.95rem", lineHeight: "1.5" }}>
-          {movie.overview || "No description available."}
-        </p>
-      </div>
     </article>
-  );
+  )
 }
 
-export default MovieCard;
+export default MovieCard
