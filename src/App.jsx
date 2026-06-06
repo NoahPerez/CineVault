@@ -8,6 +8,7 @@ import Sidebar from "./components/SideBar.jsx"
 import Profile from "./pages/Profile.jsx"
 import NotFound from "./pages/NotFound.jsx"
 import TVShows from "./pages/TVShows.jsx"
+import TVDetail from "./pages/TVDetail.jsx"
 import GenrePage from "./pages/GenrePage.jsx"
 
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/tv-shows" element={<TVShows />} />
         <Route path="/search" element={<Search />} />
         <Route path="/movie/:id" element={<MovieDetails />} />
+        <Route path="/tv/:id" element={<TVDetail />} />
         <Route path="/watchlist" element={<Watchlist />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/genre/:id" element={<GenrePage />} />

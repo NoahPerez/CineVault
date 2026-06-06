@@ -19,7 +19,12 @@ export default function HeroBanner({
   const title = movie.title || movie.name || "Untitled"
   const releaseDate = movie.release_date || movie.first_air_date || ""
   const releaseYear = releaseDate ? releaseDate.slice(0, 4) : "N/A"
-  const detailPath = movie.name && !movie.title ? "/tv-shows" : `/movie/${movie.id}`
+  const isTvShow = Boolean(movie.name && !movie.title)
+  const mediaLabel = isTvShow ? "TV Show" : "Movie"
+  const detailPath = isTvShow ? `/tv/${movie.id}` : `/movie/${movie.id}`
+  const snapshotText = isTvShow
+    ? "Popular TV shows in rotation"
+    : "Popular movies in rotation"
 
   const rating = movie.vote_average
     ? Number(movie.vote_average).toFixed(1)
@@ -47,7 +52,7 @@ export default function HeroBanner({
           <p className="hero-banner__meta">
             {releaseYear}
             <span>•</span>
-            {movie.name && !movie.title ? "TV Show" : "Movie"}
+            {mediaLabel}
             <span>•</span>
             TMDB {rating}
           </p>
@@ -90,7 +95,7 @@ export default function HeroBanner({
         <aside className="hero-banner__snapshot">
           <span className="hero-banner__snapshot-label">Featured</span>
           <strong>{featuredMovies.length}</strong>
-          <p>Popular movies in rotation</p>
+          <p>{snapshotText}</p>
           <Link to="/watchlist" className="hero-banner__snapshot-link">
             Open Watchlist <span>→</span>
           </Link>

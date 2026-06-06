@@ -6,6 +6,7 @@ const imageBaseUrl = "https://image.tmdb.org/t/p/original"
 export default function MovieDetailHero({
   movie,
   mediaType = "movie",
+  backTo = "/",
   savedEntry,
   onAdd,
   onToggleWatched,
@@ -48,7 +49,7 @@ export default function MovieDetailHero({
       <div className="movie-detail-hero__overlay" />
 
       <div className="movie-detail-hero__inner">
-        <Link to="/" className="movie-detail-hero__back-link">
+        <Link to={backTo} className="movie-detail-hero__back-link">
           ← Back
         </Link>
 

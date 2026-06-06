@@ -9,8 +9,6 @@ export default function MovieDetailPage() {
 
   useEffect(() => {
     getMovieDetails(id)
-    // getMovieDetails is not memoized in MovieContext yet.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
 
   if (loading && !selectedmovie) {
