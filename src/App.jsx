@@ -9,7 +9,7 @@ import Profile from "./pages/Profile.jsx"
 import NotFound from "./pages/NotFound.jsx"
 import TVShows from "./pages/TVShows.jsx"
 import TVDetail from "./pages/TVDetail.jsx"
-import GenrePage from "./pages/GenrePage.jsx"
+import GenrePage from "./pages/Genrepage.jsx"
 
 
 function App() {
