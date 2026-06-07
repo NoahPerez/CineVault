@@ -1,105 +1,135 @@
 import { useEffect, useMemo, useState } from "react"
-import MovieCarousel from "../components/MovieCarousel"
-import Genres from "../components/Genres"
+import { Link } from "react-router-dom"
+import { Bookmark } from "lucide-react"
 import Footer from "../components/Footer"
-import HeroBanner from "../components/HeroBanner.jsx"
+import Genres from "../components/Genres"
+import MovieCarousel from "../components/MovieCarousel"
 import { useMovies } from "../context/Movie.context"
+import "./Homepage.css"
+
+const imageBaseUrl = "https://image.tmdb.org/t/p/original"
 
 export default function Homepage() {
-  const [heroIndex, setHeroIndex] = useState(0)
+  const [backdropIndex, setBackdropIndex] = useState(0)
   const {
     popularMovies,
-    upcomingMovies,
     popularTvShows,
     loading,
     error,
     getPopularMovies,
-    getUpcomingMovies,
     getPopularTvShows,
     getGenres,
   } = useMovies()
 
-  const heroMovies = useMemo(() => {
-    const moviesWithBackdrops = popularMovies.filter((movie) => movie.backdrop_path)
-    return moviesWithBackdrops.length > 0 ? moviesWithBackdrops : popularMovies
+  const backdropMovies = useMemo(() => {
+    return popularMovies.filter((movie) => movie.backdrop_path).slice(0, 8)
   }, [popularMovies])
 
-  const featuredMovie = heroMovies[heroIndex % heroMovies.length] || null
+  const backdropMovie = backdropMovies[backdropIndex % backdropMovies.length] || null
+  const backdropUrl = backdropMovie?.backdrop_path
+    ? `${imageBaseUrl}${backdropMovie.backdrop_path}`
+    : null
 
   useEffect(() => {
     getPopularMovies()
-    getUpcomingMovies()
     getPopularTvShows()
     getGenres()
+    // Context fetch functions are not memoized yet.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    if (heroMovies.length <= 1) return undefined
+    if (backdropMovies.length <= 1) return undefined
 
     const intervalId = window.setInterval(() => {
-      setHeroIndex((currentIndex) => (currentIndex + 1) % heroMovies.length)
-    }, 5000)
+      setBackdropIndex((currentIndex) => (currentIndex + 1) % backdropMovies.length)
+    }, 9000)
 
     return () => window.clearInterval(intervalId)
-  }, [heroMovies.length])
+  }, [backdropMovies.length])
 
-  if (loading) {
-    return <div>Loading...</div>
+  if (loading && !popularMovies.length && !popularTvShows.length) {
+    return <div className="home-page__status">Loading...</div>
   }
 
   if (error) {
-    return <div>Error: {error}</div>
+    return <div className="home-page__status">Error: {error}</div>
   }
 
   return (
     <>
-      <HeroBanner
-        movie={featuredMovie}
-        featuredMovies={heroMovies.slice(0, 5)}
-        activeIndex={heroIndex}
-        onSelectFeature={setHeroIndex}
-      />
-
-      <section className="flex flex-col gap-6 p-6">
-        <div className="flex flex-col gap-4">
-          <h1 className="text-2xl font-bold text-foreground">Popular Movies</h1>
-          <MovieCarousel
-            movies={popularMovies}
-            cardSize="md"
-            cardRadius="full"
-            showRating={true}
-            itemClassName="basis-full sm:basis-1/2 lg:basis-1/5"
+      <section className="home-hero">
+        {backdropUrl && (
+          <img
+            key={backdropMovie.id}
+            className="home-hero__backdrop"
+            src={backdropUrl}
+            alt=""
+            aria-hidden="true"
           />
+        )}
+
+        <div className="home-hero__overlay" />
+
+        <div className="home-hero__inner">
+          <div className="home-hero__content">
+            <p className="home-hero__label">CineVault</p>
+            <h1>Find your next watch.</h1>
+            <p className="home-hero__copy">
+              Explore movies, TV shows, and genre collections in one place.
+            </p>
+
+            <div className="home-hero__actions">
+              <Link to="/movies">Explore Movies</Link>
+              <Link to="/tv-shows">Explore TV Shows</Link>
+            </div>
+          </div>
+
+          <div className="home-hero__watchlist" aria-label="Watchlist shortcut">
+            <div className="home-hero__watchlist-icon">
+              <Bookmark size={22} aria-hidden="true" />
+            </div>
+            <p className="home-hero__watchlist-label">Watchlist</p>
+            <h2>Your saved picks live here.</h2>
+            <p>
+              Keep movies and TV shows you want to come back to later in one
+              focused list.
+            </p>
+            <Link to="/watchlist">Open Watchlist</Link>
+            <span>Start building your queue.</span>
+          </div>
         </div>
       </section>
 
-      <section className="flex flex-col gap-6 p-6">
-        <div className="flex flex-col gap-4">
-          <h1 className="text-2xl font-bold text-foreground">Upcoming Movies</h1>
-          <MovieCarousel
-            movies={upcomingMovies}
-            cardSize="sm"
-            cardRadius="full"
-            showRating={false}
-            itemClassName="basis-full sm:basis-1/2 lg:basis-1/5"
-          />
+      <section className="home-section">
+        <div className="home-section__header">
+          <h2>Movie Picks</h2>
+          <Link to="/movies">View all</Link>
         </div>
+        <MovieCarousel
+          movies={popularMovies.slice(0, 10)}
+          cardSize="sm"
+          cardRadius="full"
+          showRating={true}
+          itemClassName="basis-1/2 sm:basis-1/3 lg:basis-1/6"
+        />
       </section>
 
-      <section className="flex flex-col gap-6 p-6">
-        <div className="flex flex-col gap-4">
-          <h1 className="text-2xl font-bold text-foreground">Popular TV Shows</h1>
-          <MovieCarousel
-            movies={popularTvShows}
-            cardSize="md"
-            cardRadius="full"
-            showRating={false}
-            itemClassName="basis-full sm:basis-1/2 lg:basis-1/5"
-          />
+      <section className="home-section">
+        <div className="home-section__header">
+          <h2>TV Picks</h2>
+          <Link to="/tv-shows">View all</Link>
         </div>
+        <MovieCarousel
+          movies={popularTvShows.slice(0, 10)}
+          cardSize="sm"
+          cardRadius="full"
+          showRating={true}
+          itemClassName="basis-1/2 sm:basis-1/3 lg:basis-1/6"
+        />
       </section>
 
-      <section className="p-6">
+      <section className="home-section" id="home-genres">
         <Genres />
       </section>
 

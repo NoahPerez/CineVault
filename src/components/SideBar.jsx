@@ -1,11 +1,11 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./SideBar.css";
 import { Clapperboard, Film, Tv, Search, Bookmark, User } from "lucide-react"
 
 import logo from "../assets/logo.svg";
 
 const links = [
-  { to: "/", label: "Movies", icon: Film },
+  { to: "/movies", label: "Movies", icon: Film },
   { to: "/tv-shows", label: "TV Shows", icon: Tv },
   { to: "/search", label: "Search", icon: Search },
   { to: "/watchlist", label: "Watchlist", icon: Bookmark },
@@ -16,10 +16,10 @@ const links = [
 export default function SideBar() {
     return (
       <aside className="sidebar">
-        <div className="sidebar__brand">
+        <Link to="/" className="sidebar__brand" aria-label="CineVault home">
           <Clapperboard className="sidebar__brand-icon" size={28} />
           <img className="sidebar__logo" src={logo} alt="CineVault logo" />
-        </div>
+        </Link>
 
         <nav className="sidebar__nav">
           {links.map((link) => {

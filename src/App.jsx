@@ -1,6 +1,7 @@
 import "./App.css"
 import { Route, Routes } from "react-router-dom"
 import Homepage from "./pages/Homepage.jsx"
+import Movies from "./pages/Movies.jsx"
 import Search from "./pages/Search"
 import MovieDetails from "./pages/MovieDetail.jsx"
 import Watchlist from "./pages/Watchlist.jsx"
@@ -19,6 +20,7 @@ function App() {
       <main className="app-main">
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/movies" element={<Movies />} />
         <Route path="/tv-shows" element={<TVShows />} />
         <Route path="/search" element={<Search />} />
         <Route path="/movie/:id" element={<MovieDetails />} />
