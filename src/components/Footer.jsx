@@ -2,7 +2,7 @@ import logo from "../assets/logo.svg";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#0d1b2a] text-white px-6 py-4 flex items-center justify-between">
+    <footer className="w-full bg-[rgba(8,16,18,0.94)] text-white px-6 py-4 flex items-center justify-between">
       
       <div className="flex items-center gap-3">
         <img

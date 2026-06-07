@@ -16,6 +16,11 @@
     align-items: center;
     gap: 10px;
     margin-bottom: 40px;
+    text-decoration: none;
+  }
+
+  .sidebar__brand:hover .sidebar__brand-icon {
+    color: #f3ff48;
   }
 
   .sidebar__brand-icon {

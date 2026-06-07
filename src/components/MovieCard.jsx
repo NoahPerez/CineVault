@@ -17,6 +17,7 @@ const radiusClasses = {
 function MovieCard({ movie, size = "md", radius = "lg", showRating = false }) {
   if (!movie) return null
 
+  const title = movie.title || movie.name || "Untitled"
   const imageUrl = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : "https://via.placeholder.com/500x750?text=No+Image"
@@ -33,7 +34,7 @@ function MovieCard({ movie, size = "md", radius = "lg", showRating = false }) {
       )}
       <img
         src={imageUrl}
-        alt={movie.title}
+        alt={title}
         className={cn("block w-full object-cover", selectedSize.image)}
         loading="lazy"
       />

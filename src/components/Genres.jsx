@@ -13,11 +13,11 @@ export default function Genres() {
   const navigate = useNavigate();
 
   return (
-    <div className="mt-10 px-4">
-      <h2 className="text-white text-xl font-bold mb-4">Browse Genres</h2>
+    <div className="mx-auto mt-10 max-w-6xl px-4">
+      <h2 className="mb-5 text-xl font-bold text-white">Browse Genres</h2>
 
-      <Carousel opts={{ align: "start", dragFree: true }} className="w-full px-10">
-        <CarouselContent className="-ml-3">
+      <Carousel opts={{ align: "center", dragFree: true }} className="mx-auto w-full px-10">
+        <CarouselContent className="-ml-3 justify-center">
           {genres.map((genre) => {
             const moviesForGenre = genreMovies?.[genre.id] || [];
             const bg = moviesForGenre[0];
@@ -25,12 +25,11 @@ export default function Genres() {
             return (
               <CarouselItem
                 key={genre.id}
-                className="pl-3 basis-[150px] md:basis-[180px] shrink-0"
+                className="basis-[132px] shrink-0 pl-3 sm:basis-[150px] md:basis-[165px]"
               >
                 <div
                   onClick={() => navigate(`/genre/${genre.id}`)}
-                  className="relative w-full h-[180px] rounded-xl overflow-hidden cursor-pointer group"
-                  style={{ backgroundColor: "red" }}
+                  className="group relative h-[150px] w-full cursor-pointer overflow-hidden rounded-lg bg-gray-800 sm:h-[165px]"
                 >
                   {bg?.poster_path ? (
                     <img

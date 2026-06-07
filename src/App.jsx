@@ -1,6 +1,7 @@
 import "./App.css"
 import { Route, Routes } from "react-router-dom"
 import Homepage from "./pages/Homepage.jsx"
+import Movies from "./pages/Movies.jsx"
 import Search from "./pages/Search"
 import MovieDetails from "./pages/MovieDetail.jsx"
 import Watchlist from "./pages/Watchlist.jsx"
@@ -8,7 +9,8 @@ import Sidebar from "./components/SideBar.jsx"
 import Profile from "./pages/Profile.jsx"
 import NotFound from "./pages/NotFound.jsx"
 import TVShows from "./pages/TVShows.jsx"
-import GenrePage from "./pages/GenrePage.jsx"
+import TVDetail from "./pages/TVDetail.jsx"
+import GenrePage from "./pages/Genrepage.jsx"
 
 
 function App() {
@@ -18,9 +20,11 @@ function App() {
       <main className="app-main">
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/movies" element={<Movies />} />
         <Route path="/tv-shows" element={<TVShows />} />
         <Route path="/search" element={<Search />} />
         <Route path="/movie/:id" element={<MovieDetails />} />
+        <Route path="/tv/:id" element={<TVDetail />} />
         <Route path="/watchlist" element={<Watchlist />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/genre/:id" element={<GenrePage />} />
