@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import "./HeroBanner.css"
+import { useState } from "react"
 
 const imageBaseUrl = "https://image.tmdb.org/t/p/original"
 
@@ -10,6 +11,8 @@ export default function HeroBanner({
   activeIndex = 0,
   onSelectFeature,
 }) {
+  const [addState, setAddState] = useState({ movieId: null, status: "idle" })
+  const addStatus = addState.movieId === movie?.id ? addState.status : "idle"
   if (!movie) return null
 
   const backdropUrl = movie.backdrop_path
@@ -29,6 +32,23 @@ export default function HeroBanner({
   const rating = movie.vote_average
     ? Number(movie.vote_average).toFixed(1)
     : "N/A"
+  const handleAdd = async () => {
+    if (!onAdd) return
+
+    try {
+      setAddState({ movieId: movie.id, status: "saving" })
+
+      const result = await onAdd(movie)
+
+      setAddState({
+        movieId: movie.id,
+        status: result?.alreadySaved ? "already-saved" : "saved",
+      })
+    } catch (error) {
+      console.log(error)
+      setAddState({ movieId: movie.id, status: "error" })
+    }
+  }  
 
   return (
     <section className="hero-banner">
@@ -63,8 +83,15 @@ export default function HeroBanner({
           </p>
 
           <div className="hero-banner__actions">
-            <button type="button" disabled={!onAdd} onClick={() => onAdd?.(movie)}>
-              + Add to Watchlist
+            <button
+              type="button"
+              disabled={!onAdd || addStatus === "saving"}
+              onClick={handleAdd}>
+              {addStatus === "saving" && "Saving..."}
+              {addStatus === "saved" && "Added"}
+              {addStatus === "already-saved" && "Already Saved"}
+              {addStatus === "error" && "Try Again"}
+              {addStatus === "idle" && "+ Add to Watchlist"}
             </button>
 
             <Link to={detailPath}>More Info</Link>

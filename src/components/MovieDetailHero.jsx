@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import "./MovieDetailHero.css"
+import { useState } from "react"
 
 const imageBaseUrl = "https://image.tmdb.org/t/p/original"
 
@@ -11,6 +12,8 @@ export default function MovieDetailHero({
   onAdd,
   onToggleWatched,
 }) {
+  const [addState, setAddState] = useState({ movieId: null, status: "idle" })
+  const addStatus = addState.movieId === movie?.id ? addState.status : "idle"
   if (!movie) return null
 
   const title = movie.title || movie.name || "Untitled"
@@ -34,6 +37,23 @@ export default function MovieDetailHero({
   const voteCount = movie.vote_count
     ? `${movie.vote_count.toLocaleString()} votes`
     : "Votes N/A"
+  const handleAdd = async () => {
+    if (!onAdd) return
+
+    try {
+      setAddState({ movieId: movie.id, status: "saving" })
+
+      const result = await onAdd(movie)
+
+      setAddState({
+        movieId: movie.id,
+        status: result?.alreadySaved ? "already-saved" : "saved",
+      })
+    } catch (error) {
+      console.log(error)
+      setAddState({ movieId: movie.id, status: "error" })
+    }
+  }   
 
   return (
     <section className="movie-detail-hero">
@@ -94,10 +114,13 @@ export default function MovieDetailHero({
                 <button
                   type="button"
                   className="movie-detail-hero__button"
-                  disabled={!onAdd}
-                  onClick={() => onAdd?.(movie)}
-                >
-                  + Add to Watchlist
+                  disabled={!onAdd || addStatus === "saving"}
+                  onClick={handleAdd}>
+                  {addStatus === "saving" && "Saving..."}
+                  {addStatus === "saved" && "Added"}
+                  {addStatus === "already-saved" && "Already Saved"}
+                  {addStatus === "error" && "Try Again"}
+                  {addStatus === "idle" && "+ Add to Watchlist"}
                 </button>
               )}
             </div>

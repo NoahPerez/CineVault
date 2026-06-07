@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from "react"
 import HeroBanner from "../components/HeroBanner.jsx"
 import MovieCarousel from "../components/MovieCarousel.jsx"
 import { useMovies } from "../context/Movie.context.jsx"
+import { useWatchlist } from "../context/WatchlistContext"
 
 export default function Movies() {
-  const [heroIndex, setHeroIndex] = useState(0)
+  const [heroIndex, setHeroIndex] = useState(0);
+  const { addToWatchlist } = useWatchlist();
   const {
     popularMovies,
     upcomingMovies,
@@ -53,6 +55,7 @@ export default function Movies() {
         featuredMovies={heroMovies.slice(0, 5)}
         activeIndex={heroIndex}
         onSelectFeature={setHeroIndex}
+        onAdd={(movie) => addToWatchlist(movie, "movie")}
       />
 
       <section className="flex flex-col gap-6 p-6">
