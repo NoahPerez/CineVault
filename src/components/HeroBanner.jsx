@@ -42,7 +42,7 @@ export default function HeroBanner({
 
       setAddState({
         movieId: movie.id,
-        status: result?.alreadySaved ? "already-saved" : "saved",
+        status: result?.alreadySaved ? "already-saved" : "idle",
       })
     } catch (error) {
       console.log(error)
@@ -88,7 +88,6 @@ export default function HeroBanner({
               disabled={!onAdd || addStatus === "saving"}
               onClick={handleAdd}>
               {addStatus === "saving" && "Saving..."}
-              {addStatus === "saved" && "Added"}
               {addStatus === "already-saved" && "Already Saved"}
               {addStatus === "error" && "Try Again"}
               {addStatus === "idle" && "+ Add to Watchlist"}

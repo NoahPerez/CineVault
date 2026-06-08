@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import MovieDetailHero from "../components/MovieDetailHero.jsx"
 import { useMovies } from "../context/Movie.context.jsx"
 import { useWatchlist } from "../context/WatchlistContext"
+import Loading from "../components/Loading.jsx"
 
 export default function TVDetail() {
   const { id } = useParams()
@@ -10,18 +11,30 @@ export default function TVDetail() {
   const { selectedTv, loading, error, getTvDetails } = useMovies()
   const isCurrentShow = selectedTv && String(selectedTv.id) === String(id)
 
-  const { addToWatchlist, findWatchlistEntry, updateWatchlistEntry } = useWatchlist()
+  const {
+    addToWatchlist,
+    findWatchlistEntry,
+    updateWatchlistEntry,
+    removeFromWatchlist,
+    isWatchlistLoading,
+  } = useWatchlist()
 
   const savedEntry = selectedTv
     ? findWatchlistEntry(selectedTv.id, "tv")
     : null
 
-  const handleToggleWatched = () => {
+  const handleToggleWatched = async () => {
     if (!savedEntry) return
 
-    updateWatchlistEntry(savedEntry.id, {
+    await updateWatchlistEntry(savedEntry.id, {
       watched: !savedEntry.watched,
     })
+  }
+
+  const handleRemove = async () => {
+    if (!savedEntry) return
+
+    await removeFromWatchlist(savedEntry.id)
   }
 
   useEffect(() => {
@@ -39,8 +52,8 @@ export default function TVDetail() {
 
   }, [id])
 
-  if (loading || requestedId !== id) {
-    return <p className="movie-detail-page__status">Loading TV show details...</p>
+  if (loading || requestedId !== id || isWatchlistLoading) {
+    return <Loading message="Loading TV show details..." />
   }
 
   if (error) {
@@ -54,13 +67,14 @@ export default function TVDetail() {
   return (
     <main className="movie-detail-page">
       <MovieDetailHero
-    movie={selectedTv}
-    mediaType="tv"
-    backTo="/tv-shows"
-    savedEntry={savedEntry}
-    onAdd={(show) => addToWatchlist(show, "tv")}
-    onToggleWatched={handleToggleWatched}
-    />
+        movie={selectedTv}
+        mediaType="tv"
+        backTo="/tv-shows"
+        savedEntry={savedEntry}
+        onAdd={(show) => addToWatchlist(show, "tv")}
+        onToggleWatched={handleToggleWatched}
+        onRemove={handleRemove}
+      />
     </main>
   )
 }
