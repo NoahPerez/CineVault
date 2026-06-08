@@ -1,7 +1,5 @@
 import {
-  createContext,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
@@ -15,7 +13,7 @@ import {
   replaceSavedTitle,
 } from "./watchlistHelpers";
 
-const WatchlistContext = createContext(null);
+import { WatchlistContext } from "./watchlistStore"
 
 export function WatchlistProvider({ children }) {
   const [watchlist, setWatchlist] = useState([]);
@@ -38,7 +36,7 @@ export function WatchlistProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    loadWatchlist();
+    Promise.resolve().then(loadWatchlist);
   }, [loadWatchlist]);
 
   const addToWatchlist = useCallback(
@@ -131,14 +129,4 @@ export function WatchlistProvider({ children }) {
   return (
     <WatchlistContext.Provider value={value}>{children}</WatchlistContext.Provider>
   );
-}
-
-export function useWatchlist() {
-  const context = useContext(WatchlistContext);
-
-  if (!context) {
-    throw new Error("useWatchlist must be used inside WatchlistProvider.");
-  }
-
-  return context;
 }

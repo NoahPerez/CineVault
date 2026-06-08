@@ -84,10 +84,25 @@
 .filter-tabs {
   align-items: center;
   display: flex;
-  gap: 0.45rem;
+  gap: 1rem;
   margin: 0 0 1.4rem;
   overflow-x: auto;
   padding-bottom: 0.25rem;
+}
+
+.filter-tabs__group {
+  align-items: center;
+  background: rgba(5, 8, 7, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.46rem;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.45rem;
+  padding: 0.28rem;
+}
+
+.filter-tabs__group--status {
+  border-color: rgba(224, 255, 0, 0.18);
 }
 
 .filter-tabs button {
@@ -116,6 +131,17 @@
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+}
+
+.watchlist-card-link {
+  color: inherit;
+  display: block;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.watchlist-card-link:hover {
+  transform: translateY(-3px);
 }
 
 @media (max-width: 760px) {

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import HeroBanner from "../components/HeroBanner.jsx"
 import MovieCarousel from "../components/MovieCarousel.jsx"
 import { useMovies } from "../context/Movie.context.jsx"
-import { useWatchlist } from "../context/WatchlistContext"
+import { useWatchlist } from "../context/useWatchlist"
 
 export default function Movies() {
   const [heroIndex, setHeroIndex] = useState(0);

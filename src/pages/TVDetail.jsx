@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import MovieDetailHero from "../components/MovieDetailHero.jsx"
 import { useMovies } from "../context/Movie.context.jsx"
-import { useWatchlist } from "../context/WatchlistContext"
+import { useWatchlist } from "../context/useWatchlist"
 import Loading from "../components/Loading.jsx"
 
 export default function TVDetail() {
