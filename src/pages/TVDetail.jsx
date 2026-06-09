@@ -8,6 +8,7 @@ import InfoOverview from "../components/InfoOverview.jsx"
 import CastCarousel from "../components/CastCarousel.jsx"
 import Gallery from "../components/Gallery.jsx"
 import ReviewsCarousel from "../components/ReviewsCarousel.jsx"
+import Footer from "../components/Footer.jsx"
 
 
 
@@ -94,6 +95,7 @@ export default function TVDetail() {
       <CastCarousel cast={cast} />
       <Gallery movie={selectedTv} />
       <ReviewsCarousel reviews={reviews} />
+      <Footer />
     </main>
   )
 }

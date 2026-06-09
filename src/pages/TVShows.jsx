@@ -3,6 +3,7 @@ import HeroBanner from "../components/HeroBanner.jsx"
 import MovieCarousel from "../components/MovieCarousel.jsx"
 import { useMovies } from "../context/Movie.context.jsx"
 import { useWatchlist } from "../context/useWatchlist"
+import Footer from "../components/Footer.jsx"
 
 export default function TVShows() {
   const [heroIndex, setHeroIndex] = useState(0)
@@ -63,6 +64,7 @@ export default function TVShows() {
           />
         </div>
       </section>
+      <Footer />
     </>
   )
 }

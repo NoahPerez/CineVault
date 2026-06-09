@@ -8,6 +8,7 @@ import InfoOverview from "../components/InfoOverview.jsx"
 import CastCarousel from "../components/CastCarousel.jsx"
 import Gallery from "../components/Gallery.jsx"
 import ReviewsCarousel from "../components/ReviewsCarousel.jsx"
+import Footer from "../components/Footer.jsx"
 
 export default function MovieDetailPage() {
   const { id } = useParams()
@@ -79,6 +80,7 @@ export default function MovieDetailPage() {
       <CastCarousel cast={cast} />
       <Gallery movie={selectedmovie} />
       <ReviewsCarousel reviews={reviews} />
+      <Footer />
     </main>
   )
 }
