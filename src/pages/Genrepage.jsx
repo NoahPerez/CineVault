@@ -8,11 +8,11 @@ export default function GenrePage() {
 
   useEffect(() => {
     if (id) {
-      getMoviesByGenre(id)
+      getMoviesByGenre(Number(id))
     }
   }, [id])
 
-  const movies = genreMovies?.[id] || []
+  const movies = genreMovies?.[Number(id)] || []
 
   if (loading) return <div className="text-white p-4">Loading...</div>
 
