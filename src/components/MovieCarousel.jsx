@@ -1,4 +1,5 @@
 import MovieCard from "./MovieCard"
+import { Link } from "react-router-dom"
 import {
   Carousel,
   CarouselContent,
@@ -13,6 +14,7 @@ export default function MovieCarousel({
   cardRadius = "lg",
   showRating = false,
   itemClassName = "basis-full sm:basis-1/2 lg:basis-1/4",
+  mediaType = "movie",
 }) {
   if (!movies.length) return null
 
@@ -31,7 +33,17 @@ export default function MovieCarousel({
             key={movie.id}
             className={`pl-4 ${itemClassName}`}
           >
-            <MovieCard movie={movie} size={cardSize} radius={cardRadius} showRating={showRating}/>
+            <Link
+              to={mediaType === "tv" ? `/tv/${movie.id}` : `/movie/${movie.id}`}
+              className="block text-inherit no-underline transition-transform duration-200 hover:-translate-y-1"
+            >
+              <MovieCard
+                movie={movie}
+                size={cardSize}
+                radius={cardRadius}
+                showRating={showRating}
+              />
+            </Link>
           </CarouselItem>
         ))}
       </CarouselContent>

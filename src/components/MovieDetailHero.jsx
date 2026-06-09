@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import "./MovieDetailHero.css"
+import { useState } from "react"
 
 const imageBaseUrl = "https://image.tmdb.org/t/p/original"
 
@@ -10,7 +11,11 @@ export default function MovieDetailHero({
   savedEntry,
   onAdd,
   onToggleWatched,
+  onRemove,
 }) {
+  const [addState, setAddState] = useState({ movieId: null, status: "idle" })
+  const addStatus = addState.movieId === movie?.id ? addState.status : "idle"
+  const [removeStatus, setRemoveStatus] = useState("idle")
   if (!movie) return null
 
   const title = movie.title || movie.name || "Untitled"
@@ -34,6 +39,36 @@ export default function MovieDetailHero({
   const voteCount = movie.vote_count
     ? `${movie.vote_count.toLocaleString()} votes`
     : "Votes N/A"
+  const handleAdd = async () => {
+    if (!onAdd) return
+
+    try {
+      setAddState({ movieId: movie.id, status: "saving" })
+
+      const result = await onAdd(movie)
+
+      setAddState({
+        movieId: movie.id,
+        status: result?.alreadySaved ? "already-saved" : "idle",
+      })
+    } catch (error) {
+      console.log(error)
+      setAddState({ movieId: movie.id, status: "error" })
+    }
+  }  
+  
+  const handleRemove = async () => {
+    if (!onRemove) return
+
+    try {
+      setRemoveStatus("removing")
+      await onRemove()
+      setRemoveStatus("idle")
+    } catch (error) {
+      console.log(error)
+      setRemoveStatus("error")
+    }
+  }
 
   return (
     <section className="movie-detail-hero">
@@ -79,25 +114,40 @@ export default function MovieDetailHero({
 
             <div className="movie-detail-hero__actions">
               {savedEntry ? (
-                <button
-                  type="button"
-                  className={
-                    savedEntry.watched
-                      ? "movie-detail-hero__button movie-detail-hero__button--active"
-                      : "movie-detail-hero__button"
-                  }
-                  onClick={onToggleWatched}
-                >
-                  {savedEntry.watched ? "Mark Unwatched" : "Mark Watched"}
-                </button>
+                <>
+                  <button
+                    type="button"
+                    className={
+                      savedEntry.watched
+                        ? "movie-detail-hero__button movie-detail-hero__button--active"
+                        : "movie-detail-hero__button"
+                    }
+                    onClick={onToggleWatched}
+                  >
+                    {savedEntry.watched ? "Mark Unwatched" : "Mark Watched"}
+                  </button>
+
+                  <button
+                    type="button"
+                    className="movie-detail-hero__button movie-detail-hero__button--danger"
+                    disabled={!onRemove || removeStatus === "removing"}
+                    onClick={handleRemove}
+                  >
+                    {removeStatus === "removing" && "Removing..."}
+                    {removeStatus === "error" && "Try Again"}
+                    {removeStatus === "idle" && "Remove"}
+                  </button>
+                </>
               ) : (
                 <button
                   type="button"
                   className="movie-detail-hero__button"
-                  disabled={!onAdd}
-                  onClick={() => onAdd?.(movie)}
-                >
-                  + Add to Watchlist
+                  disabled={!onAdd || addStatus === "saving"}
+                  onClick={handleAdd}>
+                  {addStatus === "saving" && "Saving..."}
+                  {addStatus === "already-saved" && "Already Saved"}
+                  {addStatus === "error" && "Try Again"}
+                  {addStatus === "idle" && "+ Add to Watchlist"}
                 </button>
               )}
             </div>

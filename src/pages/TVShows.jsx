@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import HeroBanner from "../components/HeroBanner.jsx"
 import MovieCarousel from "../components/MovieCarousel.jsx"
 import { useMovies } from "../context/Movie.context.jsx"
+import { useWatchlist } from "../context/useWatchlist"
 
 export default function TVShows() {
   const [heroIndex, setHeroIndex] = useState(0)
@@ -13,6 +14,7 @@ export default function TVShows() {
   }, [popularTvShows])
 
   const featuredShow = heroShows[heroIndex % heroShows.length] || null
+  const { addToWatchlist } = useWatchlist();
 
   useEffect(() => {
     getPopularTvShows()
@@ -45,6 +47,7 @@ export default function TVShows() {
         featuredMovies={heroShows.slice(0, 5)}
         activeIndex={heroIndex}
         onSelectFeature={setHeroIndex}
+        onAdd={(show) => addToWatchlist(show, "tv")}
       />
 
       <section className="flex flex-col gap-6 p-6">
@@ -56,6 +59,7 @@ export default function TVShows() {
             cardRadius="full"
             showRating={true}
             itemClassName="basis-full sm:basis-1/2 lg:basis-1/5"
+            mediaType="tv"
           />
         </div>
       </section>
