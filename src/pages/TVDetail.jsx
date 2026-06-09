@@ -4,6 +4,12 @@ import MovieDetailHero from "../components/MovieDetailHero.jsx"
 import { useMovies } from "../context/Movie.context.jsx"
 import { useWatchlist } from "../context/useWatchlist"
 import Loading from "../components/Loading.jsx"
+import InfoOverview from "../components/InfoOverview.jsx"
+import CastCarousel from "../components/CastCarousel.jsx"
+import Gallery from "../components/Gallery.jsx"
+import ReviewsCarousel from "../components/ReviewsCarousel.jsx"
+
+
 
 export default function TVDetail() {
   const { id } = useParams()
@@ -64,6 +70,15 @@ export default function TVDetail() {
     return <p className="movie-detail-page__status">TV show not found.</p>
   }
 
+  const cast = selectedTv.credits?.cast
+    ?.filter((member) => member.known_for_department === "Acting")
+    ?.filter((member) => member.profile_path)
+    ?.slice(0, 12) || []
+
+  const reviews = selectedTv.reviews?.results
+    ?.filter((review) => review.content?.trim())
+    ?.slice(0, 6) || []
+
   return (
     <main className="movie-detail-page">
       <MovieDetailHero
@@ -75,6 +90,10 @@ export default function TVDetail() {
         onToggleWatched={handleToggleWatched}
         onRemove={handleRemove}
       />
+      <InfoOverview movie={selectedTv} />
+      <CastCarousel cast={cast} />
+      <Gallery movie={selectedTv} />
+      <ReviewsCarousel reviews={reviews} />
     </main>
   )
 }
