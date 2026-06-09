@@ -4,6 +4,10 @@ import MovieDetailHero from "../components/MovieDetailHero.jsx"
 import { useMovies } from "../context/Movie.context"
 import { useWatchlist } from "../context/useWatchlist"
 import Loading from "../components/Loading.jsx"
+import InfoOverview from "../components/InfoOverview.jsx"
+import CastCarousel from "../components/CastCarousel.jsx"
+import Gallery from "../components/Gallery.jsx"
+import ReviewsCarousel from "../components/ReviewsCarousel.jsx"
 
 export default function MovieDetailPage() {
   const { id } = useParams()
@@ -50,7 +54,15 @@ export default function MovieDetailPage() {
   if (!selectedmovie || String(selectedmovie.id) !== String(id)) {
     return <p className="movie-detail-page__status">Movie not found.</p>
   }
-  
+
+  const cast = selectedmovie.credits?.cast
+    ?.filter((member) => member.known_for_department === "Acting")
+    ?.filter((member) => member.profile_path)
+    ?.slice(0, 12) || []
+
+  const reviews = selectedmovie.reviews?.results
+    ?.filter((review) => review.content?.trim())
+    ?.slice(0, 6) || []
 
   return (
     <main className="movie-detail-page">
@@ -63,6 +75,10 @@ export default function MovieDetailPage() {
         onToggleWatched={handleToggleWatched}
         onRemove={handleRemove}
       />
+      <InfoOverview movie={selectedmovie} />
+      <CastCarousel cast={cast} />
+      <Gallery movie={selectedmovie} />
+      <ReviewsCarousel reviews={reviews} />
     </main>
   )
 }
