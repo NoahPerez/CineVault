@@ -123,44 +123,45 @@ const getMovieGenre = async () =>{
   };
 
 // all the genre in the movie database
-//   const getGenres = async () => {
-//   try {
-//     const { data } = await api.get("/genre/movie/list?language=en");
-//     setGenres(data.genres || []);
-//   } catch (error) {
-//     setError(error.message || "Error fetching genres");
-//   }
-// };
+  const getGenres = async () => {
+  try {
+    const { data } = await api.get("/genre/movie/list?language=en");
+    setGenres(data.genres || []);
+    fetchMoviesForAllGenres(data.genres || [])
+  } catch (error) {
+    setError(error.message || "Error fetching genres");
+  }
+};
 
 // only slected one genre movies
 
-const getGenres = async () => {
-    try {
-      setError(null)
+// const getGenres = async () => {
+//     try {
+//       setError(null)
 
-      const { data } = await api.get("/genre/movie/list?language=en")
+//       const { data } = await api.get("/genre/movie/list?language=en")
 
-      const allowedGenres = [
-        "Action",
-        "Comedy",
-        "Horror",
-        "Drama",
-        "Science Fiction",
-        "Thriller",
-      ]
+//       const allowedGenres = [
+//         "Action",
+//         "Comedy",
+//         "Horror",
+//         "Drama",
+//         "Science Fiction",
+//         "Thriller",
+//       ]
 
-      const filteredGenres = data.genres.filter((genre) =>
-        allowedGenres.includes(genre.name)
-      )
+//       const filteredGenres = data.genres.filter((genre) =>
+//         allowedGenres.includes(genre.name)
+//       )
 
-      setGenres(filteredGenres)
+//       setGenres(filteredGenres)
 
       
-      fetchMoviesForAllGenres(filteredGenres)
-    } catch (error) {
-      setError(error.message)
-    }
-  }
+//       fetchMoviesForAllGenres(filteredGenres)
+//     } catch (error) {
+//       setError(error.message)
+//     }
+//   }
 
 const getMoviesByGenre = async (genreId) => {
     try {

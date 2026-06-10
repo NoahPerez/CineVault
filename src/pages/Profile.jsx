@@ -22,8 +22,12 @@ export default function Profile() {
   
 
   useEffect(() => {
-    if (!genres.length) getGenres()
+    if (!genres.length) 
+      getGenres()
   }, [])
+
+
+
 
   const handleSave = (updatedUser) => {
     setUser(updatedUser)
