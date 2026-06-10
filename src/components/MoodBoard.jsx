@@ -60,8 +60,8 @@
 
 import { useMovies } from "../context/Movie.context"
 import { useNavigate } from "react-router-dom"
+import {useEffect} from "react"
 
-// TODO: mood labels are hardcoded — genre data is real from TMDB API
 const MOODS = [
   { mood: "Feeling Adventurous", genre: "Action" },
   { mood: "Need a Laugh", genre: "Comedy" },
@@ -72,8 +72,19 @@ const MOODS = [
 ]
 
 export default function MoodBoard() {
-  const { genres, genreMovies } = useMovies()
+  const { genres, genreMovies, getGenres, fetchMoviesForAllGenres } = useMovies()
   const navigate = useNavigate()
+
+useEffect(() => {
+    
+    if (!genres.length) {
+      getGenres()
+    } else if (Object.keys(genreMovies).length === 0) {
+      
+      fetchMoviesForAllGenres(genres)
+    }
+  }, [genres])
+
 
   return (
     <section className="mb-8">
@@ -103,6 +114,7 @@ export default function MoodBoard() {
                   alt={genre}
                   className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
                 />
+                
               )}
 
               <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition" />
