@@ -58,7 +58,7 @@
 //     )
 // }
 
-import { useMovies } from "../context/Movie.context"
+import { useMovies } from "../context/useMovies.jsx"
 import { useNavigate } from "react-router-dom"
 
 // TODO: mood labels are hardcoded — genre data is real from TMDB API

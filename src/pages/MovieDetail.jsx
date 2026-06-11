@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import MovieDetailHero from "../components/MovieDetailHero.jsx"
-import { useMovies } from "../context/Movie.context"
+import { useMovies } from "../context/useMovies.jsx"
 import { useWatchlist } from "../context/useWatchlist"
 import Loading from "../components/Loading.jsx"
 import InfoOverview from "../components/InfoOverview.jsx"

@@ -4,7 +4,7 @@ import { Bookmark } from "lucide-react"
 import Footer from "../components/Footer"
 import Genres from "../components/Genres"
 import MovieCarousel from "../components/MovieCarousel"
-import { useMovies } from "../context/Movie.context"
+import { useMovies } from "../context/useMovies.jsx"
 import "./Homepage.css"
 
 const imageBaseUrl = "https://image.tmdb.org/t/p/original"

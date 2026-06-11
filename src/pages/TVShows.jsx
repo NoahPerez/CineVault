@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import HeroBanner from "../components/HeroBanner.jsx"
 import MovieCarousel from "../components/MovieCarousel.jsx"
-import { useMovies } from "../context/Movie.context.jsx"
+import { useMovies } from "../context/useMovies.jsx"
 import { useWatchlist } from "../context/useWatchlist"
 import Footer from "../components/Footer.jsx"
 
