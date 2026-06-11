@@ -2,7 +2,7 @@ import StatsRow from "../components/StatsRow"
 import {useState, useEffect} from "react"
 import ProfileHeader from "../components/ProfileHeader"
 import MoodBoard from "../components/MoodBoard"
-import { useMovies } from "@/context/Movie.context"
+import { useMovies } from "@/context/useMovies"
 import Footer from "../components/Footer"
 import EditProfileModal from  "../components/EditProfileModal"
 

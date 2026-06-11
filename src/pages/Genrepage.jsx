@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { useMovies } from "../context/Movie.context"
+import { useMovies } from "../context/useMovies.jsx"
 
 export default function GenrePage() {
   const { id } = useParams()

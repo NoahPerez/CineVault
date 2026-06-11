@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useMovies } from "../context/Movie.context";
+import { useMovies } from "../context/useMovies";
 import {
   Carousel,
   CarouselContent,

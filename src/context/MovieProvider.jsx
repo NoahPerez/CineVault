@@ -1,8 +1,8 @@
-import { createContext, useContext, useState } from "react";
-import api from "../lib/api";
+import { useState } from "react";
+import { MovieContext } from "./MovieContext.jsx"
+import api from "../lib/api.js";
 
 
-const MovieContext = createContext()
 
 export function MovieProvider({children}){
    const [popularMovies, setPopularMovies] =useState([]);
@@ -12,14 +12,20 @@ export function MovieProvider({children}){
    const [loading, setLoading] =useState(true);
    const [searchResults, setSearchResults] =useState([]);
    const [selectedmovie, setSelectedmovie] =useState(null);
-   const [error, setError] =useState(null);
+   const [selectedTvSeasons, setSelectedTvSeasons] =useState(null);
+  const [selectedTvEpisode, setSelectedTvEpisode] =useState(null);
+  const [selectedTvEpisodeVideos, setSelectedTvEpisodeVideos] =useState(null);
+  const [seasonLoading, setSeasonLoading] = useState(false)
+  const [seasonError, setSeasonError] = useState(null)
+  const [episodeVideoLoading, setEpisodeVideoLoading] = useState(false)
+  const [episodeVideoError, setEpisodeVideoError] = useState(null)
+
+  const [error, setError] =useState(null);
     const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [genreMovies, setGenreMovies] = useState({});
 
    const getPopularMovies = async () =>{
-console.log(" getPopularMovies CALLED");
-
     try {
         setLoading(true)
         setError(null)
@@ -79,7 +85,6 @@ console.log(" getPopularMovies CALLED");
   try {
     setLoading(true)
     setError(null)
-
     const { data } = await api.get(`/tv/${seriesId}`, {
       params: {
         append_to_response: "credits,images,videos,reviews,recommendations",
@@ -93,18 +98,68 @@ console.log(" getPopularMovies CALLED");
     setLoading(false)
   }
 }
-const getMovieGenre = async () =>{
+
+// TV Seasons
+// https://api.themoviedb.org/3/tv/{series_id}/season/{season_number}
+
+const getTvSeasons = async (series_id, season_number) =>{
+  try {
+    setSeasonLoading(true)
+    setSeasonError(null)
+    const { data } = await api.get(`/tv/${series_id}/season/${season_number}`)
+    setSelectedTvSeasons(data)
+  } catch (error) {
+    setSeasonError(error.message || "Error fetching tv season number")
+  } finally {
+    setSeasonLoading(false)
+  }
+}
+
+// GET TV Episodes
+// https://api.themoviedb.org/3/tv/{series_id}/season/{season_number}/episode/{episode_number}
+const getTvEpisode = async (series_id, season_number, episode_number) =>{
   try {
     setLoading(true)
     setError(null)
-    const { data } = await api.get("/genre/movie/list")
-    setMovieGenre(data.genres || [])
+    const { data } = await api.get(`/tv/${series_id}/season/${season_number}/episode/${episode_number}`)
+    setSelectedTvEpisode(data)
   } catch (error) {
-    setError(error.message || "Error fetching movie genre")
+    setError(error.message || "Error fetching tv episode")
   } finally {
     setLoading(false)
   }
 }
+
+// GET TV Episodes VIDEOS
+// https://api.themoviedb.org/3/tv/{series_id}/season/{season_number}/episode/{episode_number}/videos
+const getTvEpisodeVideos = async (series_id, season_number, episode_number) => {
+  try {
+    setEpisodeVideoLoading(true)
+    setEpisodeVideoError(null)
+    const { data } = await api.get(
+      `/tv/${series_id}/season/${season_number}/episode/${episode_number}/videos`
+    )
+    setSelectedTvEpisodeVideos(data)
+  } catch (error) {
+    setEpisodeVideoError(error.message || "Error fetching tv episode videos")
+  } finally {
+    setEpisodeVideoLoading(false)
+  }
+}
+
+// Do we need this to fetch the genre?
+// const getMovieGenre = async () =>{
+//   try {
+//     setLoading(true)
+//     setError(null)
+//     const { data } = await api.get("/genre/movie/list")
+//     setMovieGenre(data.genres || [])
+//   } catch (error) {
+//     setError(error.message || "Error fetching movie genre")
+//   } finally {
+//     setLoading(false)
+//   }
+// }
 
 
    const searchMovies = async (query) => {
@@ -219,6 +274,19 @@ const fetchMoviesForAllGenres = async (genresList) => {
         getTvDetails,
         searchResults, 
         searchMovies,
+        selectedTvSeasons,
+        getTvSeasons,
+        seasonLoading,
+        seasonError,
+        selectedTvEpisode,
+        getTvEpisode,
+        selectedTvEpisodeVideos,
+        setSelectedTvEpisodeVideos,
+        setSelectedTvEpisode,
+        getTvEpisodeVideos,
+        episodeVideoLoading,
+        episodeVideoError,
+        setSelectedTvSeasons,
         genres,
         getGenres,
         getMoviesByGenre,
@@ -230,9 +298,4 @@ const fetchMoviesForAllGenres = async (genresList) => {
        {children}
         </MovieContext.Provider>
     )
-}
-
-
-export function useMovies(){
-    return useContext(MovieContext)
 }

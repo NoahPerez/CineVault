@@ -58,7 +58,7 @@
 //     )
 // }
 
-import { useMovies } from "../context/Movie.context"
+import { useMovies } from "../context/useMovies.jsx"
 import { useNavigate } from "react-router-dom"
 import {useEffect} from "react"
 
