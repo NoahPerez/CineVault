@@ -4,7 +4,7 @@ import { useMovies } from "../context/useMovies.jsx"
 
 export default function GenrePage() {
   const { id } = useParams()
-  const { genreMovies, getMoviesByGenre, loading } = useMovies()
+  const { genreMovies, getMoviesByGenre } = useMovies()
 
   useEffect(() => {
     if (id) {
@@ -14,7 +14,7 @@ export default function GenrePage() {
 
   const movies = genreMovies?.[Number(id)] || []
 
-  if (loading) return <div className="text-white p-4">Loading...</div>
+ if (!movies.length) return <div className="text-white p-4">Loading...</div>
 
   return (
     <div className="p-6">
