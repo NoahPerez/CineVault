@@ -125,6 +125,7 @@ export default function Homepage() {
           cardSize="sm"
           cardRadius="full"
           showRating={true}
+          mediaType="tv"
           itemClassName="basis-1/2 sm:basis-1/3 lg:basis-1/6"
         />
       </section>
