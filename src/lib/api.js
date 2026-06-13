@@ -1,7 +1,5 @@
 import axios from "axios";
 
-console.log(" API FILE IS RUNNING");
-console.log("ENV CHECK:", import.meta.env);
 const api = axios.create({
   baseURL: import.meta.env.VITE_TMDB_BASE_URL,
   headers: {
