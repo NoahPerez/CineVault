@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MovieContext } from "./MovieContext.jsx"
 import api from "../lib/api.js";
+ 
 
 
 
@@ -24,6 +25,10 @@ export function MovieProvider({children}){
     const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [genreMovies, setGenreMovies] = useState({});
+
+  const [youMayLike, setYouMayLike] = useState([])
+  const [youMayLikeLoading, setYouMayLikeLoading] = useState(false)
+  const [youMayLikeError, setYouMayLikeError] = useState(null)
 
    const getPopularMovies = async () =>{
     try {
@@ -258,6 +263,56 @@ const fetchMoviesForAllGenres = async (genresList) => {
     }
   }
 
+  // Recommandation Fetch Functions for Profile Page
+
+  const getYouMayLike = async (watchlist = []) => {
+    if (!watchlist.length) {
+      setYouMayLike([])
+      return
+    }
+
+    try {
+      setYouMayLikeLoading(true)
+      setYouMayLikeError(null)
+
+      const watchedTitle = watchlist.find((item) => item.watched)
+      const sourceTitle = watchedTitle || watchlist[0]
+
+      const mediaType = sourceTitle.mediaType || sourceTitle.media_type || "movie"
+
+      const endpoint =
+        mediaType === "tv"
+          ? `/tv/${sourceTitle.tmdbId}/recommendations`
+          : `/movie/${sourceTitle.tmdbId}/recommendations`
+
+      const { data } = await api.get(endpoint)
+
+      const filteredResults = (data.results || []).filter((recommendation) => {
+        return !watchlist.find((savedTitle) => {
+          const savedMediaType = savedTitle.mediaType || savedTitle.media_type || "movie"
+
+          return (
+            savedMediaType === mediaType &&
+            String(savedTitle.tmdbId) === String(recommendation.id)
+          )
+        })
+      })
+
+      const resultsWithMediaType = filteredResults.map((recommendation) => {
+        return {
+          ...recommendation,
+          mediaType: mediaType,
+        }
+      })
+
+      setYouMayLike(resultsWithMediaType.slice(0, 5))
+    } catch (error) {
+      setYouMayLikeError(error.message || "Could not load recommendations")
+    } finally {
+      setYouMayLikeLoading(false)
+    }
+  }
+
     return (
         <MovieContext.Provider 
         value={{popularMovies, 
@@ -293,7 +348,11 @@ const fetchMoviesForAllGenres = async (genresList) => {
         selectedGenre,
         setSelectedGenre,
         genreMovies,
-        fetchMoviesForAllGenres
+        fetchMoviesForAllGenres,
+        youMayLike,
+        youMayLikeLoading,
+        youMayLikeError,
+        getYouMayLike,
         }}>
        {children}
         </MovieContext.Provider>

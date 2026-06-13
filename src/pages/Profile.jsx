@@ -5,8 +5,10 @@ import MoodBoard from "../components/MoodBoard"
 import { useMovies } from "@/context/useMovies"
 import Footer from "../components/Footer"
 import EditProfileModal from  "../components/EditProfileModal"
+import YouMayLike from "../components/YouMayLike"
+import { useWatchlist } from "../context/useWatchlist"
 
-// hardcoded for you ali
+// hardcoded for you ali/ Ali : keep it HardCoded :p 
 const DefaultUser = {
   name: "Alex Mercer",
   username: "@alexmercer",
@@ -17,14 +19,47 @@ const DefaultUser = {
 
 export default function Profile() {
   const [user, setUser]= useState(DefaultUser)
-  const {genres, getGenres} = useMovies()
+  const {
+    // genres,
+    // getGenres,
+    youMayLike,
+    youMayLikeLoading,
+    youMayLikeError,
+    getYouMayLike,
+  } = useMovies()
   const [isEditing, setIsEditing] = useState(false)
+  const { watchlist, isWatchlistLoading } = useWatchlist()
+
+  const watchedMoviesCount = watchlist.filter((item) => {
+    const mediaType = item.mediaType || item.media_type || "movie"
+    return mediaType === "movie" && item.watched
+  }).length
+
+  const tvShowsCount = watchlist.filter((item) => {
+    const mediaType = item.mediaType || item.media_type || "movie"
+    return mediaType === "tv"
+  }).length
+
+  const watchlistCount = watchlist.length
+
+  const stats = [
+    { label: "Movies Watched", value: watchedMoviesCount },
+    { label: "TV Shows", value: tvShowsCount },
+    { label: "Watchlist", value: watchlistCount },
+  ]
   
 
+  // useEffect(() => {
+  //   if (!genres.length) 
+  //     getGenres()
+  // }, [])
+
   useEffect(() => {
-    if (!genres.length) 
-      getGenres()
-  }, [])
+    if (!isWatchlistLoading) {
+      getYouMayLike(watchlist)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isWatchlistLoading, watchlist])
 
 
 
@@ -38,7 +73,12 @@ export default function Profile() {
     <div className="min-h-screen bg-[#0d1117] text-white px-6 py-8">
       <div className= "flex-1">
        <ProfileHeader user={user} onEditClick={() => setIsEditing(true)} />  
-      <StatsRow/>
+      <StatsRow stats={stats} isLoading={isWatchlistLoading} />
+      <YouMayLike
+         recommendations={youMayLike}
+         isLoading={youMayLikeLoading}
+         error={youMayLikeError}
+      />
       <MoodBoard/>
       </div>
 

@@ -60,7 +60,8 @@
 
 import { useMovies } from "../context/useMovies.jsx"
 import { useNavigate } from "react-router-dom"
-import {useEffect} from "react"
+import { useEffect } from "react"
+import "./MoodBoard.css"
 
 const MOODS = [
   { mood: "Feeling Adventurous", genre: "Action" },
@@ -87,46 +88,46 @@ useEffect(() => {
 
 
   return (
-    <section className="mb-8">
+     <section className="mood-board">
 
-      <div className="flex items-center gap-2 mb-4">
-        <h2 className="text-lg font-black uppercase tracking-widest text-[white]">
-          {/* Lights, Camera, Mood */} MOOD BOARD
-        </h2>
-        <div className="flex-1 h-[1px] bg-[#dfff00]/30 ml-2" />
-      </div>
+      <div className="mood-board__header">
+    <div>
+      <p className="mood-board__kicker">Genre Discovery</p>
+      <h2>{/* Lights, Camera, Mood */} Mood Board</h2>
+    </div>
+    <div className="mood-board__line" />
+  </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="mood-board__grid">
         {MOODS.map(({ mood, genre }) => {
 
           const genreObj = genres.find((g) => g.name === genre)
           const bgMovie = genreObj ? genreMovies?.[genreObj.id]?.[0] : null
 
           return (
-            <div
+            <button
               key={mood}
+              type="button"
+              disabled={!genreObj}
               onClick={() => genreObj && navigate(`/genre/${genreObj.id}`)}
-              className="relative h-[100px] rounded-xl overflow-hidden cursor-pointer group"
+              className="mood-card"
             >
               {bgMovie?.poster_path && (
                 <img
                   src={`https://image.tmdb.org/t/p/w500${bgMovie.poster_path}`}
-                  alt={genre}
-                  className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+                  alt=""
+                  aria-hidden="true"
+                  className="mood-card__image"
                 />
-                
               )}
 
-              <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition" />
+              <div className="mood-card__overlay" />
 
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <p className="text-white text-xs font-bold text-center px-2">{mood}</p>
-                <p className="text-white text-[10px] uppercase tracking-wide mt-1">{genre}</p>
+              <div className="mood-card__content">
+                <span>{genre}</span>
+                <strong>{mood}</strong>
               </div>
-
-              <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-[#dfff00] transition duration-300" />
-
-            </div>
+            </button>
           )
         })}
       </div>
