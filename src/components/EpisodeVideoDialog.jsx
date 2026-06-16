@@ -30,30 +30,30 @@ export default function EpisodeVideoDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl bg-background text-foreground">
+      <DialogContent className="episode-dialog max-w-4xl">
         <DialogHeader>
           <DialogTitle>{episode?.name || "Episode Video"}</DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="episode-dialog__description">
             {episode?.overview || "Watch the selected episode video."}
           </DialogDescription>
         </DialogHeader>
 
         {videoLoading ? (
-          <p className="text-sm text-muted-foreground">Loading video...</p>
+          <p className="episode-dialog__state">Loading video...</p>
         ) : videoError ? (
-          <p className="text-sm text-destructive">{videoError}</p>
+          <p className="episode-dialog__state episode-dialog__state--error">{videoError}</p>
         ) : embedUrl ? (
-          <div className="overflow-hidden rounded-xl border border-white/8">
+          <div className="episode-dialog__frame">
             <iframe
               src={embedUrl}
               title={activeVideo?.name || episode?.name || "Episode video"}
-              className="aspect-video w-full"
+              className="episode-dialog__iframe"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             />
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">
+          <p className="episode-dialog__state">
             No episode video available.
           </p>
         )}
