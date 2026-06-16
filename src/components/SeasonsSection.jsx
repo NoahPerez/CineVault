@@ -1,5 +1,6 @@
 import SeasonSelector from "./SeasonSelector"
 import EpisodesList from "./EpisodesList"
+import "./Episodes.css"
 
 export default function SeasonsSection({
   seasons = [],
@@ -13,25 +14,30 @@ export default function SeasonsSection({
   if (!seasons.length) return null
 
   return (
-    <section className="border-y border-white/5 bg-[#0b0b0b] px-6 py-8 md:px-12">
-      <div className="flex flex-col gap-8">
+    <section className="episodes-section">
+      <div className="episodes-section__inner">
+        <div className="episodes-section__header">
+          <div>
+            <p className="episodes-section__kicker">Episode Guide</p>
+            <h2>Season {selectedSeasonNumber}</h2>
+          </div>
+          <p className="episodes-section__meta">
+            {episodes.length} {episodes.length === 1 ? "episode" : "episodes"}
+          </p>
+        </div>
+
         <SeasonSelector
           seasons={seasons}
           selectedSeasonNumber={selectedSeasonNumber}
           onSeasonChange={onSeasonChange}
         />
 
-        <div className="flex flex-col gap-5">
-          <h2 className="text-lg font-black uppercase tracking-wide text-foreground">
-            Episodes - Season {selectedSeasonNumber}
-          </h2>
-          <EpisodesList
-            episodes={episodes}
-            onEpisodePlay={onEpisodePlay}
-            seasonLoading={seasonLoading}
-            seasonError={seasonError}
-          />
-        </div>
+        <EpisodesList
+          episodes={episodes}
+          onEpisodePlay={onEpisodePlay}
+          seasonLoading={seasonLoading}
+          seasonError={seasonError}
+        />
       </div>
     </section>
   )

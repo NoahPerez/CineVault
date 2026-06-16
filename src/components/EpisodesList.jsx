@@ -7,19 +7,19 @@ export default function EpisodesList({
   seasonError = null,
 }) {
   if (seasonLoading) {
-    return <p className="text-sm text-muted-foreground">Loading episodes...</p>
+    return <p className="episodes-list__state">Loading episodes...</p>
   }
 
   if (seasonError) {
-    return <p className="text-sm text-destructive">{seasonError}</p>
+    return <p className="episodes-list__state episodes-list__state--error">{seasonError}</p>
   }
 
   if (!episodes.length) {
-    return <p className="text-sm text-muted-foreground">No episodes found.</p>
+    return <p className="episodes-list__state">No episodes found.</p>
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="episodes-list">
       {episodes.map((episode) => (
         <EpisodeCard
           key={episode.id ?? episode.episode_number}

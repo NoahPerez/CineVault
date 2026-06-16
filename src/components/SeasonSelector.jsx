@@ -1,5 +1,3 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
 export default function SeasonSelector({
   seasons = [],
   selectedSeasonNumber,
@@ -14,30 +12,39 @@ export default function SeasonSelector({
   )
 
   return (
-    <div className="flex flex-col gap-4">
-      <h2 className="text-lg font-black uppercase tracking-wide text-foreground">
-        Seasons
-      </h2>
+    <div className="season-selector">
+      <div className="season-selector__top">
+        <div>
+          <p className="season-selector__kicker">Browse Seasons</p>
+          <h3 className="season-selector__title">Choose a season</h3>
+        </div>
+        <span className="season-selector__count">
+          {availableSeasons.length} seasons
+        </span>
+      </div>
 
-      <Tabs
-        value={currentValue}
-        onValueChange={(value) => onSeasonChange?.(Number(value))}
-      >
-        <TabsList
-          variant="line"
-          className="flex w-fit flex-wrap justify-start gap-3 bg-transparent p-0"
-        >
-          {availableSeasons.map((season) => (
-            <TabsTrigger
+      <div className="season-selector__list" role="tablist" aria-label="TV seasons">
+        {availableSeasons.map((season) => {
+          const value = String(season.season_number)
+
+          return (
+            <button
               key={season.id ?? season.season_number}
-              value={String(season.season_number)}
-              className="size-12 flex-none rounded-full border border-white/15 bg-[#111111] px-0 py-0 text-base font-bold text-white transition-colors hover:border-primary/70 hover:bg-[#181818] data-active:border-primary data-active:bg-primary data-active:text-black group-data-[variant=line]/tabs-list:data-active:border-primary group-data-[variant=line]/tabs-list:data-active:bg-primary group-data-[variant=line]/tabs-list:data-active:text-black group-data-[variant=line]/tabs-list:data-active:after:hidden"
+              type="button"
+              className={
+                value === currentValue
+                  ? "season-selector__button is-active"
+                  : "season-selector__button"
+              }
+              aria-selected={value === currentValue}
+              role="tab"
+              onClick={() => onSeasonChange?.(Number(value))}
             >
               {season.season_number}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }
