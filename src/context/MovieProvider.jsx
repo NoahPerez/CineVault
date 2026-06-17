@@ -21,6 +21,7 @@ export function MovieProvider({children}){
   const [episodeVideoLoading, setEpisodeVideoLoading] = useState(false)
   const [episodeVideoError, setEpisodeVideoError] = useState(null)
 
+
   const [error, setError] =useState(null);
     const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState(null);
@@ -152,26 +153,14 @@ const getTvEpisodeVideos = async (series_id, season_number, episode_number) => {
   }
 }
 
-// Do we need this to fetch the genre?
-// const getMovieGenre = async () =>{
-//   try {
-//     setLoading(true)
-//     setError(null)
-//     const { data } = await api.get("/genre/movie/list")
-//     setMovieGenre(data.genres || [])
-//   } catch (error) {
-//     setError(error.message || "Error fetching movie genre")
-//   } finally {
-//     setLoading(false)
-//   }
-// }
-
+// GET Multi Search Results
+// https://api.themoviedb.org/3/search/multi
 
    const searchMovies = async (query) => {
     try {
       setLoading(true);
       setError(null);
-      const { data } = await api.get("/search/movie", {
+      const { data } = await api.get("/search/multi", {
         params: { query },
       });
       setSearchResults(data.results || []);
@@ -193,35 +182,6 @@ const getTvEpisodeVideos = async (series_id, season_number, episode_number) => {
   }
 };
 
-// only slected one genre movies
-
-// const getGenres = async () => {
-//     try {
-//       setError(null)
-
-//       const { data } = await api.get("/genre/movie/list?language=en")
-
-//       const allowedGenres = [
-//         "Action",
-//         "Comedy",
-//         "Horror",
-//         "Drama",
-//         "Science Fiction",
-//         "Thriller",
-//       ]
-
-//       const filteredGenres = data.genres.filter((genre) =>
-//         allowedGenres.includes(genre.name)
-//       )
-
-//       setGenres(filteredGenres)
-
-      
-//       fetchMoviesForAllGenres(filteredGenres)
-//     } catch (error) {
-//       setError(error.message)
-//     }
-//   }
 
 const getMoviesByGenre = async (genreId) => {
     try {
@@ -328,6 +288,8 @@ const fetchMoviesForAllGenres = async (genresList) => {
         selectedTv,
         getTvDetails,
         searchResults, 
+        setLoading,
+        setError,
         searchMovies,
         selectedTvSeasons,
         getTvSeasons,
