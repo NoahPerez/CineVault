@@ -7,10 +7,15 @@ import { Input } from "@/components/ui/input"
 import { useMovies } from "../context/useMovies.jsx"
 
 export default function Search() {
+  // query stores what the user is typing right now in the input.
   const [query, setQuery] = useState("")
+  // activeQuery stores the last submitted search term.
   const [activeQuery, setActiveQuery] = useState("")
+  // These values come from Context API, where the TMDB request is handled.
   const { searchResults, searchMovies, loading, error } = useMovies()
 
+  // TMDB multi-search can return movies, tv shows, and people.
+  // We only keep movie and tv results for this page.
   const results = useMemo(() => {
     return (searchResults || []).filter((item) => {
       const mediaType = item.media_type || item.mediaType
@@ -18,8 +23,10 @@ export default function Search() {
     })
   }, [searchResults])
 
+  // When the form is submitted, stop the page refresh and search TMDB.
   const handleSubmit = async (event) => {
     event.preventDefault()
+    // trim() removes extra spaces so we do not search for an empty string.
     const trimmedQuery = query.trim()
 
     if (!trimmedQuery) {
@@ -42,6 +49,7 @@ export default function Search() {
         </p>
       </div>
 
+      {/* Search form UI: input on the left, submit button on the right. */}
       <form onSubmit={handleSubmit} className="flex max-w-2xl gap-3">
         <div className="relative flex-1">
           <SearchIcon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -58,6 +66,7 @@ export default function Search() {
         </Button>
       </form>
 
+      {/* Render the correct UI state depending on the search lifecycle. */}
       {!activeQuery ? (
         <p className="text-sm text-muted-foreground">
           Start by typing a movie or TV show title.
@@ -83,6 +92,7 @@ export default function Search() {
             </p>
           </div>
 
+          {/* Results grid: each item links to either a movie detail page or a TV detail page. */}
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {results.map((item) => {
               const mediaType = item.media_type || item.mediaType

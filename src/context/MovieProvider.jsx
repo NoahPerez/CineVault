@@ -156,13 +156,17 @@ const getTvEpisodeVideos = async (series_id, season_number, episode_number) => {
 // GET Multi Search Results
 // https://api.themoviedb.org/3/search/multi
 
+  // This function sends the user's text query to TMDB.
+  // TMDB returns mixed results such as movies, TV shows, and people.
    const searchMovies = async (query) => {
     try {
+      // Reuse the shared loading and error state for the request lifecycle.
       setLoading(true);
       setError(null);
       const { data } = await api.get("/search/multi", {
         params: { query },
       });
+      // Save the raw results in context so the Search page can filter and display them.
       setSearchResults(data.results || []);
     } catch (err) {
       setError(err.message || "Failed to search movies");
