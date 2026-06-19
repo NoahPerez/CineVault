@@ -78,7 +78,7 @@ export default function HeroBanner({
           </p>
 
           <p className="hero-banner__overview">
-            {movie.overview ||
+            {movie.tagline || movie.overview ||
               "Discover movies, save your watchlist, and keep track of what you want to watch next."}
           </p>
 

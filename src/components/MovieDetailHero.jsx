@@ -82,12 +82,12 @@ export default function MovieDetailHero({
       )}
 
       <div className="movie-detail-hero__overlay" />
-
+      
       <div className="movie-detail-hero__inner">
-        <Link to={backTo} className="movie-detail-hero__back-link">
+        
+      <Link to={backTo} className="movie-detail-hero__back-link">
           ← Back
-        </Link>
-
+      </Link>
         <div className="movie-detail-hero__grid">
           <div className="movie-detail-hero__copy">
             <p className="movie-detail-hero__type">
@@ -108,9 +108,9 @@ export default function MovieDetailHero({
               )}
             </p>
 
-            <p className="movie-detail-hero__overview">
-              {movie.overview || "No overview available from TMDB yet."}
-            </p>
+         <p className="movie-detail-hero__overview">
+  {movie.tagline || "No tagline available from TMDB yet."}
+</p>
 
             <div className="movie-detail-hero__actions">
               {savedEntry ? (
