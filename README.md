@@ -1,5 +1,7 @@
 # CineVault
 
+![CineVault hero banner](src/assets/readme-hero.png)
+
 CineVault is a React movie and TV discovery application built for the Ironhack Module 2 project. It combines TMDB data, reusable React components, client-side routing, watchlist CRUD behavior, and a polished streaming-style interface.
 
 ## Live Demo
