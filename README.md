@@ -24,6 +24,12 @@ Core goals:
 - Build reusable UI components for cards, carousels, dialogs, badges, and page sections.
 - Practice team collaboration through branches, pull requests, merge conflict resolution, and shared code ownership.
 
+## Engineering Roadmap
+
+![CineVault full-stack engineering roadmap](src/assets/Full-Stack_Engineering_Project_Roadmap.png)
+
+This roadmap summarizes how the project moved from curriculum concepts into a collaborative full-stack-style React application: team ownership, feature-driven branches, shared architecture decisions, CRUD flow, defensive rendering, and deployment readiness.
+
 ## Features
 
 - Homepage with featured media sections
@@ -52,6 +58,12 @@ Core goals:
 | Styling | CSS, Tailwind CSS, shadcn styles |
 | Backend/CRUD Practice | CineVault API / JSON Server-compatible watchlist API |
 | Deployment | Vercel |
+
+## Technical Architecture
+
+![CineVault technical architecture](src/assets/Full-Stack_Application_Technical_Architecture.png)
+
+The architecture centers on a React/Vite frontend, TMDB API integration, shared Context state, and a watchlist API used for persistent CRUD behavior. The key technical pattern is keeping local React state synchronized with backend persistence while protecting API-driven screens with loading guards, fallbacks, and cleanup logic.
 
 ## Beyond The Curriculum
 
